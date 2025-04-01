@@ -1,0 +1,45 @@
+# DNS 配置
+dns:
+  enable: true
+  listen: 0.0.0.0:5353
+  enhanced-mode: redir-host
+  nameserver:
+    - 1.1.1.1
+  fallback:
+    - 1.1.1.1
+  fallback-filter:
+    geoip: true
+    ipcidr:
+      - 240.0.0.0/4
+
+# 代理节点配置
+proxies:
+  - name: "Trojan-Proxy"
+    type: trojan
+    server: shct.1kgbbf2mga.ccddn4.icu
+    port: 65300
+    password: 602ae060-3ff8-3ef2-8e64-9b014c2b35ca
+    udp: true
+    tls:
+      servername: dl.shctjpntt.cc.tjcct.xyz
+      insecure: false
+    network: tcp
+
+# 代理组配置
+proxy-groups:
+  - name: Proxy
+    type: select
+    proxies:
+      - Trojan-Proxy
+      - DIRECT
+      - REJECT
+
+# 规则配置
+rules:
+  - IP-CIDR,1.1.1.1/32,Proxy
+  - GEOIP,CN,DIRECT
+  - MATCH,Proxy
+
+# 端口配置
+port: 10809
+socks-port: 10808
